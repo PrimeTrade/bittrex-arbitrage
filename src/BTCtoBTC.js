@@ -38,6 +38,14 @@ function getAnswer(){
       	}
  	})
 
+	var btc = [];
+	var eth = [];
+	var KEY_BASE_CURRENCY = "BaseCurrency";
+    var KEY_MARKET_CURRENCY = "MarketCurrency";
+    
+	getCurrency(a, btc, eth, KEY_BASE_CURRENCY, KEY_MARKET_CURRENCY);
+	
+	
 }
 
 function getCurrency(jsonArray, btc, eth, keyBaseCurrency, KeyMarketCurrency){
