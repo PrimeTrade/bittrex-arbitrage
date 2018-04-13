@@ -1,6 +1,9 @@
 function getAnswer(){
 
 	let request = require("request")
+	let instance = require('./MarketAskName.js');
+	let a,b;
+	
 	let relativeURL = "https://bittrex.com/api/v1.1/public/getmarkets"
 	
 	request({
@@ -10,8 +13,8 @@ function getAnswer(){
 
     	if (!error && response.statusCode === 200) {
 
-        	let a=body;
-        	console.log(a);
+        	a=body;
+        	//console.log(a);
 
     	}
     	else{
@@ -29,8 +32,8 @@ function getAnswer(){
 
       	if (!error && response.statusCode === 200) {
 
-          	let b=body;
-          	console.log(b);
+          	b=body;
+          	//console.log(b);
 
       	}
       	else{
@@ -38,18 +41,26 @@ function getAnswer(){
       	}
  	})
 
-	var btc = [];
-	var eth = [];
-	var KEY_BASE_CURRENCY = "BaseCurrency";
-    var KEY_MARKET_CURRENCY = "MarketCurrency";
+	let btc = [];
+	let eth = [];
+	let KEY_BASE_CURRENCY = "BaseCurrency";
+    let KEY_MARKET_CURRENCY = "MarketCurrency";
     
 	getCurrency(a, btc, eth, KEY_BASE_CURRENCY, KEY_MARKET_CURRENCY);
 	
+	let marketAskNames = [];
+	let btcName,etcName;
+	
+	for(btcName in btc){
+		for(etcName in eth){
+			//let a=new instance();
+		}
+	} 
 	
 }
 
 function getCurrency(jsonArray, btc, eth, keyBaseCurrency, KeyMarketCurrency){
-	for(i = 0;i < jsonArray.length;i++){
+	for(i = 0;i < Object.keys(jsonArray.result).length;i++){
 		temp = i;
 		baseCurrency = temp.keyBaseCurrency;
 		marketCurrency = temp.KeyMarketCurrency;
@@ -62,4 +73,10 @@ function getCurrency(jsonArray, btc, eth, keyBaseCurrency, KeyMarketCurrency){
 	}
 	console.log(btc);
 }
+   
+   
+   
+   
+   getAnswer();
+
 
