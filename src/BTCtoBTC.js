@@ -44,9 +44,28 @@ function getAnswer(){
 
             for(btcName in btc){
                 for(etcName in eth){
-                    //let a=new instance();
+                	if(btc[btcName] == eth[etcName]){
+                    	let tempMAN=new instance();
+                    	for(let i=0;i<b.length;i++){
+                    		let temp = b[i];
+                    		let marketName = temp.MarketName;
+                    		let ask = temp.Ask;
+                    		let bid = temp.Bid;
+                    				
+                    		if(marketName == "BTC-"+btc[btcName]){
+                    			tempMAN.setMarketName("BTC-"+btc[btcName]);
+                    			tempMAN.setAsk(ask);
+                    		}
+                    		if(marketName == "ETH-"+eth[etcName]){
+                    			tempMAN.setBid(bid);
+                    		}
+                    	}
+                    marketAskNames.push(tempMAN);
+                    break;
+                	}
                 }
             }
+            		
 
         }
         else{
