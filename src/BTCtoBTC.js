@@ -60,10 +60,21 @@ function getAnswer(){
                     			tempMAN.setBid(bid);
                     		}
                     	}
-                    marketAskNames.push(tempMAN);
-                    break;
+                    	marketAskNames.push(tempMAN);
+                    	break;
                 	}
                 }
+            }
+            
+            let max = 0;
+            		
+            		
+			for(let temp in marketAskNames){
+            	let res = marketAskNames[temp].getBid() * marketAskNames[temp].getCoins();
+            	if(max < res){
+            		max = marketAskNames[temp].getBid() * marketAskNames[temp].getCoins();
+            		highestEth = marketAskNames[temp];
+            	}
             }
             		
 
