@@ -90,6 +90,20 @@ function getAnswer(){
                             break;
                         }
                     }
+                    
+                    let temp0 = b[i];
+            		
+            		let x;
+            		let relativeURL= "https://bittrex.com/api/v1.1/public/getmarketsummary?market=BTC-ETH";
+					request({
+						url: relativeURL,
+						json: true
+					},function(error,response,body){
+							if(!error && response.statusCode===200){
+		 						x=body.result;
+		 						//console.log(x[0]);
+		 					}
+		 			});
 
                 }
                 else{
