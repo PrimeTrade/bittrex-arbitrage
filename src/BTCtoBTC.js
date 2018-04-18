@@ -1,5 +1,5 @@
 let request = require("request")
-//let instance = require('./MarketAskName.js');
+let instance = require('./MarketAskName.js');
 
 let a,b;
 
@@ -26,58 +26,76 @@ function getAnswer(){
                 if (!error && response.statusCode === 200) {
 
                     b=body.result;
+                    let btc = [];
+                    let eth = [];
+                    let KEY_BASE_CURRENCY = "BaseCurrency";
+                    let KEY_MARKET_CURRENCY = "MarketCurrency";
+
+                    getCurrency(a, btc, eth, KEY_BASE_CURRENCY, KEY_MARKET_CURRENCY);
+
+                    let marketAskNames = [];
+                    let btcName,etcName;
+
+                    for(let btcName in btc){
+                        for(let etcName in eth){
+                            if(btc[btcName] == eth[etcName]){
+                                let tempMAN=new instance();
+                                for(let i=0;i<b.length;i++){
+                                    let temp = b[i];
+                                    let marketName = temp.MarketName;
+                                    let ask = temp.Ask;
+                                    let bid = temp.Bid;
+
+                                    if(marketName == "BTC-"+btc[btcName]){
+                                        tempMAN.setMarketName("BTC-"+btc[btcName]);
+                                        tempMAN.setAsk(ask);
+                                    }
+                                    if(marketName == "ETH-"+eth[etcName]){
+                                        tempMAN.setBid(bid);
+                                    }
+                                }
+                                marketAskNames.push(tempMAN);
+                                break;
+                            }
+                        }
+                    }
+
+                    let max = 0;
+
+
+                    for(let temp in marketAskNames){
+                        let res = marketAskNames[temp].getBid() * marketAskNames[temp].getCoins();
+                        if(max < res){
+                            max = marketAskNames[temp].getBid() * marketAskNames[temp].getCoins();
+                            highestEth = marketAskNames[temp];
+                        }
+                    }
+
+                    let i;
+                    for(i=0;i<b.length;i++){
+                        let temp = b[i];
+                        let marketName = temp.MarketName;
+                        if(marketName == highestEth.getMarketName()){
+                            break;
+                        }
+                    }
+
+                    let temp = b[i];
+
+
+                    for(i=0;i<b.length;i++){
+                        let temp1 = b[i];
+                        let marketName = temp1.MarketName;
+                        if(marketName == "ETH-"+highestEth.getMarketName().substring(4)){
+                            break;
+                        }
+                    }
+
                 }
                 else{
                     console.log("error occured");
                 }
             });
-
-            let btc = [];
-            let eth = [];
-            let KEY_BASE_CURRENCY = "BaseCurrency";
-            let KEY_MARKET_CURRENCY = "MarketCurrency";
-
-            getCurrency(a, btc, eth, KEY_BASE_CURRENCY, KEY_MARKET_CURRENCY);
-
-            let marketAskNames = [];
-            let btcName,etcName;
-
-            for(btcName in btc){
-                for(etcName in eth){
-                	if(btc[btcName] == eth[etcName]){
-                    	let tempMAN=new instance();
-                    	for(let i=0;i<b.length;i++){
-                    		let temp = b[i];
-                    		let marketName = temp.MarketName;
-                    		let ask = temp.Ask;
-                    		let bid = temp.Bid;
-                    				
-                    		if(marketName == "BTC-"+btc[btcName]){
-                    			tempMAN.setMarketName("BTC-"+btc[btcName]);
-                    			tempMAN.setAsk(ask);
-                    		}
-                    		if(marketName == "ETH-"+eth[etcName]){
-                    			tempMAN.setBid(bid);
-                    		}
-                    	}
-                    	marketAskNames.push(tempMAN);
-                    	break;
-                	}
-                }
-            }
-            
-            let max = 0;
-            		
-            		
-			for(let temp in marketAskNames){
-            	let res = marketAskNames[temp].getBid() * marketAskNames[temp].getCoins();
-            	if(max < res){
-            		max = marketAskNames[temp].getBid() * marketAskNames[temp].getCoins();
-            		highestEth = marketAskNames[temp];
-            	}
-            }
-            		
-
         }
         else{
             console.log("error occured");
@@ -92,12 +110,12 @@ function getCurrency(jsonArray, btc, eth, keyBaseCurrency, KeyMarketCurrency){
 
     for(i = 0;i<jsonArray.length;i++){
         temp = jsonArray[i];
-        console.log(temp);
+        //console.log(temp);
         baseCurrency = temp.BaseCurrency;
         marketCurrency = temp.MarketCurrency;
 
-        console.log(baseCurrency);
-        console.log(marketCurrency);
+        //console.log(baseCurrency);
+        //console.log(marketCurrency);
 
         if(baseCurrency == ("BTC")){
             btc.push(marketCurrency);
@@ -106,7 +124,7 @@ function getCurrency(jsonArray, btc, eth, keyBaseCurrency, KeyMarketCurrency){
             eth.push(marketCurrency);
         }
     }
-    console.log(btc);
+    //console.log(btc);
 }
 
 getAnswer();
